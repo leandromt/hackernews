@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import Header from './components/Header';
+import Search from './components/Search';
+import Table from './components/Table';
 
 const list = [
   {
@@ -26,9 +29,6 @@ const list = [
     objectID: 4,
   }
 ];
-
-const isSearched = searchTerm => item =>
-  item.title.toLowerCase().includes(searchTerm.toLowerCase());
 
 class App extends Component {
 
@@ -61,49 +61,8 @@ class App extends Component {
       <div className="App">
         <Header title={title} />
         <Search onChange={this.onSearchChange} value={searchTerm} />
-        <Table list={list} term={searchTerm} onDismiss={this.onDismiss} />
+        <Table list={list} pattern={searchTerm} onDismiss={this.onDismiss} />
       </div>
-    );
-  }
-}
-
-class Header extends Component {
-  render() {
-    const { title } = this.props;
-    return (
-      <div>
-        <h1>{title}</h1>
-      </div>
-    );
-  }
-}
-
-class Search extends Component {
-  render() {
-    const { onChange, value } = this.props;
-    return (
-      <form>
-        <input type="text" onChange={onChange} value={value} />
-      </form>
-    );
-  }
-}
-
-class Table extends Component {
-  render() {
-    const { list, term, onDismiss } = this.props;
-    return (
-      <ul>
-        {list.filter(isSearched(term)).map(item =>
-          <li id={item.key} key={item.objectID}>
-            <p><a href={item.ul}>{item.title}</a></p>
-            <p>{item.author}</p>
-            <p>{item.num_comments}</p>
-            <p>{item.points}</p>
-            <p><button onClick={() => onDismiss(item.objectID)} type="button">Dismiss</button></p>
-          </li>
-        )}
-      </ul>
     );
   }
 }
