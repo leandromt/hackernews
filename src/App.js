@@ -34,6 +34,7 @@ class App extends Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       title: 'Olá Mundo!',
       status: true,
@@ -43,7 +44,6 @@ class App extends Component {
 
     this.onSearchChange = this.onSearchChange.bind(this);
     this.onDismiss = this.onDismiss.bind(this);
-
   }
 
   onDismiss(id) {
@@ -59,22 +59,51 @@ class App extends Component {
     const { title, list, searchTerm } = this.state;
     return (
       <div className="App">
-        <h1>{title}</h1>
-        <form>
-          <input type="text" onChange={this.onSearchChange} value={searchTerm} />
-        </form>
-        <ul>
-          {list.filter(isSearched(searchTerm)).map(item =>
-            <li id={item.key} key={item.objectID}>
-              <p><a href={item.ul}>{item.title}</a></p>
-              <p>{item.author}</p>
-              <p>{item.num_comments}</p>
-              <p>{item.points}</p>
-              <p><button onClick={() => this.onDismiss(item.objectID)} type="button">Dismiss</button></p>
-            </li>
-          )}
-        </ul>
+        <Header title={title} />
+        <Search onChange={this.onSearchChange} value={searchTerm} />
+        <Table list={list} term={searchTerm} onDismiss={this.onDismiss} />
       </div>
+    );
+  }
+}
+
+class Header extends Component {
+  render() {
+    const { title } = this.props;
+    return (
+      <div>
+        <h1>{title}</h1>
+      </div>
+    );
+  }
+}
+
+class Search extends Component {
+  render() {
+    const { onChange, value } = this.props;
+    return (
+      <form>
+        <input type="text" onChange={onChange} value={value} />
+      </form>
+    );
+  }
+}
+
+class Table extends Component {
+  render() {
+    const { list, term, onDismiss } = this.props;
+    return (
+      <ul>
+        {list.filter(isSearched(term)).map(item =>
+          <li id={item.key} key={item.objectID}>
+            <p><a href={item.ul}>{item.title}</a></p>
+            <p>{item.author}</p>
+            <p>{item.num_comments}</p>
+            <p>{item.points}</p>
+            <p><button onClick={() => onDismiss(item.objectID)} type="button">Dismiss</button></p>
+          </li>
+        )}
+      </ul>
     );
   }
 }
