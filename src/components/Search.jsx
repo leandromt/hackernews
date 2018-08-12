@@ -1,11 +1,14 @@
-import React, { Component } from 'react';
+// Componentes de Classe ES6
+// Possui indepencia
+import React, { Component } from "react";
 
 class Search extends Component {
   render() {
-    const { onChange, value } = this.props;
+    const { onChange, value, children } = this.props;
     return (
       <form>
-        <input type="text" onChange={onChange} value={value} />
+        <label htmlFor="search">{children}</label>
+        <input id="search" type="text" onChange={onChange} value={value} />
       </form>
     );
   }

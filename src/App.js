@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Header from "./components/Header";
-import Search from "./components/Search";
 import Table from "./components/Table";
 
 const list = [
@@ -57,13 +56,26 @@ class App extends Component {
   render() {
     const { title, list, searchTerm } = this.state;
     return (
-      <div className="App">
-        <Header title={title} />
-        <Search onChange={this.onSearchChange} value={searchTerm} />
+      <div className="page">
+        <div className="interactions">
+          <Header title={title} />
+          <Search onChange={this.onSearchChange} value={searchTerm}>
+            Buscar
+          </Search>
+        </div>
         <Table list={list} pattern={searchTerm} onDismiss={this.onDismiss} />
       </div>
     );
   }
 }
+
+// Functional Stateless Components
+// Components nao possui ciclo de vida
+const Search = ({ onChange, value, children }) => (
+  <form>
+    <label htmlFor="search">{children}</label>
+    <input id="search" type="text" onChange={onChange} value={value} />
+  </form>
+);
 
 export default App;
