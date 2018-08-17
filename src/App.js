@@ -21,7 +21,8 @@ class App extends Component {
       title: "Hacker News API",
       results: null,
       serachKey: "",
-      searchTerm: DEFAULT_QUERY
+      searchTerm: DEFAULT_QUERY,
+      error: null
     };
 
     // Métodos do objeto
@@ -43,7 +44,7 @@ class App extends Component {
     )
       .then(response => response.json())
       .then(result => this.setSearchTopStories(result))
-      .catch(error => error);
+      .catch(error => this.setState({ error }));
   }
 
   setSearchTopStories(result) {
@@ -89,18 +90,10 @@ class App extends Component {
   }
 
   render() {
-    const { title, results, searchTerm, searchKey } = this.state;
+    const { title, results, searchTerm, searchKey, error } = this.state;
     const page = (results && results.page && results[searchKey].page) || 0;
     const list =
       (results && results[searchKey] && results[searchKey].hits) || [];
-
-    console.log(results);
-    console.log(searchKey);
-
-    /*if (!result) {
-      console.log("morreu!");
-      return null;
-    }*/
 
     return (
       <div className="page">
@@ -114,7 +107,11 @@ class App extends Component {
             Buscar
           </Search>
         </div>
-        <Table list={list} onDismiss={this.onDismiss} />
+        {error ? (
+          <p>Something went wrong!</p>
+        ) : (
+          <Table list={list} onDismiss={this.onDismiss} />
+        )}
         <div className="interactions">
           <Button
             onClick={() => this.fetchSearchTopStories(searchKey, page + 1)}
