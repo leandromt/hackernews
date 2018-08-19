@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Button from "./Button";
+import { Button } from "./../Buttons";
 
 class Table extends Component {
   render() {
